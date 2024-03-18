@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Data Display</h2>
+
+<!-- 动态生成的表格 -->
+<table id="dynamic-table">
+    <thead>
+        <tr>
+            <th>peptide</th>
+            <th>loci</th>
+            <th>start</th>
+            <th>end</th>
+            <th>gene</th>
+        </tr>
+    </thead>
+    <tbody>
+       <!-- 动态生成的数据将在此显示 -->
+    </tbody>
+</table>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+<script>
+    // 从 Excel 文件中读取数据
+    var file = "https://github.com/hanfengxian/hanfengxian.github.io/blob/main/peptide_correlation.xlsx";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", file, true);
+    xhr.responseType = "arraybuffer";
+
+    xhr.onload = function(e) {
+        var arraybuffer = xhr.response;
+
+        // 将 Excel 文件转换为二进制数据
+        var data = new Uint8Array(arraybuffer);
+        var workbook = XLSX.read(data, { type: "array" });
+
+        // 读取第一个工作表
+        var sheetName = workbook.SheetNames[0];
+        var sheet = workbook.Sheets[sheetName];
+
+        // 将 Excel 表格转换为 JSON 对象
+        var jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // 获取动态表格的tbody元素
+        var dynamicTbody = document.querySelector("#dynamic-table tbody");
+
+        // 遍历 JSON 对象中的每一行，并将其添加到动态表格中
+        jsonData.forEach(function(row) {
+            var newRow = document.createElement("tr");
+
+            Object.values(row).forEach(function(value) {
+                var newCell = document.createElement("td");
+                newCell.textContent = value;
+                newRow.appendChild(newCell);
+            });
+
+            dynamicTbody.appendChild(newRow);
+        });
+    };
+
+    xhr.send();
+</script>
+</body>
+</html>
