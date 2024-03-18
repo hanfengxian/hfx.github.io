@@ -28,10 +28,9 @@
     <thead>
         <tr>
             <th>peptide</th>
-            <th>loci</th>
-            <th>start</th>
-            <th>end</th>
+             <th>HLA</th>
             <th>gene</th>
+            <th>loci</th>
         </tr>
     </thead>
     <tbody>
@@ -44,7 +43,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
 <script>
     // 从 Excel 文件中读取数据
-    var file = "https://github.com/hanfengxian/hanfengxian.github.io/blob/main/peptide_correlation.xlsx";
+    var file = "peptide_correlation.xlsx";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", file, true);
     xhr.responseType = "arraybuffer";
